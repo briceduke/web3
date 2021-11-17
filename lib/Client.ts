@@ -39,7 +39,7 @@ export const getBalance = async () => {
 	if (!isInitialized) await initWeb3();
 
 	return contract.methods
-		.balanceOf('0x5694d03A6521B3823D365529705951Db59267e41')
+		.balanceOf(selectedAccount)
 		.call()
 		.then((bal) => {
 			return Web3.utils.fromWei(bal);
