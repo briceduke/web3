@@ -51,3 +51,14 @@ export const getWallet = async () => {
 
 	return selectedAccount;
 };
+
+export const getTokenName = async () => {
+	if (!isInitialized) await initWeb3();
+
+	return contract.methods
+		.name()
+		.call()
+		.then((name) => {
+			return name;
+		});
+};
