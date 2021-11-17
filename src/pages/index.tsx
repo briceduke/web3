@@ -38,7 +38,7 @@ export default function Index({}: Props): ReactElement {
 	return (
 		<Container height="100vh">
 			<h1>{tokenName}</h1>
-			<h1>Your balance is {balance}</h1>
+			<h1>Your balance is {balance} HEDGE</h1>
 			<h1>Wallet address: {walletAddress}</h1>
 			<Button onClick={fetchBalance}>Refresh</Button>
 			<DarkModeSwitch />
