@@ -1,46 +1,27 @@
-import { Button, Container } from '@chakra-ui/react';
+import { Button, Container, Text } from '@chakra-ui/react';
+import { useWeb3React } from '@web3-react/core';
 import React, { ReactElement, useEffect, useState } from 'react';
 
-import { getBalance, getTokenName, getWallet } from '../../lib/Client';
 import { DarkModeSwitch } from '../components/DarkModeSwitch';
+import { injected } from '../utils/connection';
 
 interface Props {}
 
 export default function Index({}: Props): ReactElement {
-	const [balance, setBalance] = useState(0);
-	const [walletAddress, setWalletAddress] = useState('');
-	const [tokenName, setTokenName] = useState('');
+	const { active, activate, account } = useWeb3React();
 
-	const fetchBalance = async () => {
-		const bal = await getBalance().catch((err) => console.error(err));
-
-		setBalance(bal);
+	const connect = async () => {
+		try {
+			await activate(injected);
+		} catch (err) {
+			console.error(err);
+		}
 	};
-
-	const fetchWalletAddress = async () => {
-		const wallet = await getWallet();
-
-		setWalletAddress(wallet);
-	};
-
-	const fetchTokenName = async () => {
-		const name = await getTokenName();
-
-		setTokenName(name);
-	};
-
-	useEffect(() => {
-		fetchBalance();
-		fetchWalletAddress();
-		fetchTokenName();
-	}, []);
 
 	return (
 		<Container height="100vh">
-			<h1>{tokenName}</h1>
-			<h1>Your balance is {balance} HEDGE</h1>
-			<h1>Wallet address: {walletAddress}</h1>
-			<Button onClick={fetchBalance}>Refresh</Button>
+			<Button onClick={connect}>Connect to Metamask</Button>
+			{active ? <Text>{account}</Text> : <span>Not connected!</span>}
 			<DarkModeSwitch />
 		</Container>
 	);
